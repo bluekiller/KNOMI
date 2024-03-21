@@ -13,15 +13,19 @@ static lv_popup_status_t lv_popup_status = LV_POPUP_NULL;
 static lv_obj_t * previous_menu;
 
 void lv_popup_warning(const char * warning, bool clickable) {
+    if (!ui_ScreenPopup)
+    {
+        ui_ScreenPopup_screen_init();
+    }
     lv_textarea_set_text(ui_textarea_popup, warning);
 
-    if (clickable) {
-        lv_obj_clear_flag(ui_btn_popup_ok, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_set_y(ui_img_popup, -15);
-    } else {
-        lv_obj_add_flag(ui_btn_popup_ok, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_set_y(ui_img_popup, 0);
-    }
+    // if (clickable) {
+    //     lv_obj_clear_flag(ui_btn_popup_ok, LV_OBJ_FLAG_HIDDEN);
+        // lv_obj_set_y(ui_img_popup, -15);
+    // } else {
+    //     lv_obj_add_flag(ui_btn_popup_ok, LV_OBJ_FLAG_HIDDEN);
+    //     lv_obj_set_y(ui_img_popup, 0);
+    // }
 
     if (lv_scr_act() != ui_ScreenPopup) {
         previous_menu = lv_scr_act();

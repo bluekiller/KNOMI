@@ -6,7 +6,7 @@
 #define DEFAULT_KLIPPER_TOOL "tool0"
 
 #define DNS_PORT 53
-DNSServer dnsServer;
+// DNSServer dnsServer;
 
 // access point info
 static IPAddress ap_local_ip = AP_LOCAL_IP; // access point IP
@@ -58,7 +58,8 @@ wifi_auth_mode_t wifi_get_ahth_mode_from_scanned_list(void) {
 #define EEPROM_SIGN 0x20231212
 #define EEPROM_SIGN_SIZE 4
 // Init the EEPROM and restore all NV vars.
-void eeprom_init(void) {
+void 
+eeprom_init(void) {
     if (!EEPROM.begin(1024)) {
         Serial.println("failed to initialise EEPROM");
         return ;
@@ -258,9 +259,9 @@ restart:
                 Serial.println("access point create failed!!!\r\n");
             }
             // dns for captive portal
-            bool ret = dnsServer.start(DNS_PORT, "*", WiFi.softAPIP());
-            Serial.print("dnsServer: ");
-            Serial.println(ret);
+            // bool ret = dnsServer.start(DNS_PORT, "*", WiFi.softAPIP());
+            // Serial.print("dnsServer: ");
+            // Serial.println(ret);
         }
     }
 
@@ -345,12 +346,14 @@ void wifi_task(void * parameter) {
                 if (wifi_status == WIFI_STATUS_CONNECTED)
                     wifi_status = WIFI_STATUS_DISCONNECT;
                 break;
+            default:
+                break;
         }
 
         wifi_mode_t m = WiFi.getMode();
-        if (m == WIFI_MODE_AP || m == WIFI_MODE_APSTA) {
-            dnsServer.processNextRequest();
-        }
+        // if (m == WIFI_MODE_AP || m == WIFI_MODE_APSTA) {
+        //     dnsServer.processNextRequest();
+        // }
 
         delay(100);
     }

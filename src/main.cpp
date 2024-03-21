@@ -4,21 +4,39 @@
 
 #include "ui/ui.h"
 
-
 // Hardware init
 #ifdef I2C0_SUPPORT
 TwoWire i2c0 = TwoWire(0);
 // TwoWire i2c1 = TwoWire(1);
 #endif
 
-void lvgl_ui_task(void * parameter);
-void lis2dw12_task(void * parameter);
-void wifi_task(void * parameter);
-void moonraker_task(void * parameter);
-void setup() {
+void lvgl_ui_task(void *parameter);
+void lis2dw12_task(void *parameter);
+void wifi_task(void *parameter);
+void moonraker_task(void *parameter);
+void setup()
+{
     Serial.begin(115200);
     while (!Serial)
         delay(10);
+    printf("ESP32 Partition table:\n\n");
+
+    printf("| Type | Sub |  Offset  |   Size   |       Label      |\n");
+    printf("| ---- | --- | -------- | -------- | ---------------- |\n");
+
+    esp_partition_iterator_t pi = esp_partition_find(ESP_PARTITION_TYPE_ANY, ESP_PARTITION_SUBTYPE_ANY, NULL);
+    if (pi != NULL)
+    {
+        do
+        {
+            const esp_partition_t *p = esp_partition_get(pi);
+            printf("|  %02x  | %02x  | 0x%06X | 0x%06X | %-16s |\r\n",
+                   p->type, p->subtype, p->address, p->size, p->label);
+        } while (pi = (esp_partition_next(pi)));
+    }
+
+    Serial.print("free heap size: ");
+    Serial.println(esp_get_free_heap_size());
     Serial.println("\r\n\r\n------------- Knomi startup -----------\r\n");
     Serial.println("SPI Flash: ");
     Serial.print("  Size: ");
@@ -40,19 +58,19 @@ void setup() {
 #endif
 
     xTaskCreate(lvgl_ui_task, "lvgl ui",
-        4096,  // Stack size (bytes)
-        NULL,  // Parameter to pass
-        10,     // Task priority
-        NULL   // Task handle
-        );
+                4096, // Stack size (bytes)
+                NULL, // Parameter to pass
+                10,   // Task priority
+                NULL  // Task handle
+    );
 
 #ifdef LIS2DW_SUPPORT
     xTaskCreate(lis2dw12_task, "lis2dw12",
-        4096,  // Stack size (bytes)
-        NULL,  // Parameter to pass
-        9,     // Task priority
-        NULL   // Task handle
-        );
+                4096, // Stack size (bytes)
+                NULL, // Parameter to pass
+                9,    // Task priority
+                NULL  // Task handle
+    );
 #endif
 
     xTaskCreate(wifi_task, "wifi",
@@ -70,5 +88,6 @@ void setup() {
         );
 }
 
-void loop() {
+void loop()
+{
 }

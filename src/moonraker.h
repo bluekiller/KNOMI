@@ -30,13 +30,13 @@ typedef struct {
     bool heating_bed;
 } moonraker_data_t;
 
-#define QUEUE_LEN 5
-typedef struct {
-    String queue[QUEUE_LEN];
-    uint8_t index_r;  // Ring buffer read position
-    uint8_t index_w;  // Ring buffer write position
-    uint8_t count;    // Count of commands in the queue
-} post_queue_t;
+// #define QUEUE_LEN 5
+// typedef struct {
+//     String queue[QUEUE_LEN];
+//     uint8_t index_r;  // Ring buffer read position
+//     uint8_t index_w;  // Ring buffer write position
+//     uint8_t count;    // Count of commands in the queue
+// } post_queue_t;
 
 class MOONRAKER {
     public:
@@ -45,13 +45,13 @@ class MOONRAKER {
         bool data_unlock; //
         moonraker_data_t data;
         void http_get_loop(void);
-        void http_post_loop(void);
-        bool post_to_queue(String path);
-        bool post_gcode_to_queue(String gcode);
+        // void http_post_loop(void);
+        // bool post_to_queue(String path);
+        // bool post_gcode_to_queue(String gcode);
         String send_request(const char * type, String path);
 
     private:
-        post_queue_t post_queue;
+        // post_queue_t post_queue;
         void get_printer_ready(void);
         void get_printer_info(void);
         void get_progress(void);

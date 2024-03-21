@@ -4,9 +4,14 @@
 // Project name: Knomi2
 
 #include "../ui.h"
+#include <widget/lv_ag_gif.h>
+
+// static const uint8_t* buffer = (uint8_t*)lv_mem_alloc(150*100*3);
+
 
 void ui_ScreenWelcome_screen_init(void)
 {
+    LV_LOG_INFO("ui_ScreenWelcome_screen_init");
     ui_ScreenWelcome = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_ScreenWelcome, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(ui_ScreenWelcome, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -23,4 +28,9 @@ void ui_ScreenWelcome_screen_init(void)
     lv_obj_set_style_text_color(ui_label_welcome, lv_color_hex(0x4082F4), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_label_welcome, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    img_welcome_gif = lv_ag_gif_create(ui_ScreenWelcome);
+    // LV_LOG_INFO("buffer address: %p", buffer);
+    // lv_ag_gif_set_framebuf(img_welcome_gif, (uint8_t *)buffer);
+    lv_ag_gif_set_src(img_welcome_gif, "L:/welcome.gif");
+    lv_obj_align(img_welcome_gif, LV_ALIGN_CENTER, 0, -36);
 }

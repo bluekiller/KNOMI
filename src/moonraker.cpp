@@ -59,35 +59,35 @@ String MOONRAKER::send_request(const char * type, String path) {
     return response;
 }
 
-void MOONRAKER::http_post_loop(void) {
-    if (post_queue.count == 0) return;
-    send_request("POST", post_queue.queue[post_queue.index_r]);
-    post_queue.count--;
-    post_queue.index_r = (post_queue.index_r + 1) % QUEUE_LEN;
-}
+// void MOONRAKER::http_post_loop(void) {
+//     if (post_queue.count == 0) return;
+//     send_request("POST", post_queue.queue[post_queue.index_r]);
+//     post_queue.count--;
+//     post_queue.index_r = (post_queue.index_r + 1) % QUEUE_LEN;
+// }
 
-bool MOONRAKER::post_to_queue(String path) {
-    if (post_queue.count >= QUEUE_LEN) {
-        Serial.println("moonraker post queue overflow!");
-        return false;
-    }
-    post_queue.queue[post_queue.index_w] = path;
-    post_queue.index_w = (post_queue.index_w + 1) % QUEUE_LEN;
-    post_queue.count++;
-#ifdef MOONRAKER_DEBUG
-    Serial.printf("\r\n\r\n ************ post queue *******************\r\n\r\n");
-    Serial.print("count: ");   Serial.println(post_queue.count);
-    Serial.print("index_w: "); Serial.println(post_queue.index_w);
-    Serial.print("queue: ");   Serial.println(path);
-    Serial.println("\r\n*******************************\r\n\r\n");
-#endif
-    return true;
-}
+// bool MOONRAKER::post_to_queue(String path) {
+//     if (post_queue.count >= QUEUE_LEN) {
+//         Serial.println("moonraker post queue overflow!");
+//         return false;
+//     }
+//     post_queue.queue[post_queue.index_w] = path;
+//     post_queue.index_w = (post_queue.index_w + 1) % QUEUE_LEN;
+//     post_queue.count++;
+// #ifdef MOONRAKER_DEBUG
+//     Serial.printf("\r\n\r\n ************ post queue *******************\r\n\r\n");
+//     Serial.print("count: ");   Serial.println(post_queue.count);
+//     Serial.print("index_w: "); Serial.println(post_queue.index_w);
+//     Serial.print("queue: ");   Serial.println(path);
+//     Serial.println("\r\n*******************************\r\n\r\n");
+// #endif
+//     return true;
+// }
 
-bool MOONRAKER::post_gcode_to_queue(String gcode) {
-    String path = "/printer/gcode/script?script=" + gcode;
-    return post_to_queue(path);
-}
+// bool MOONRAKER::post_gcode_to_queue(String gcode) {
+//     String path = "/printer/gcode/script?script=" + gcode;
+//     return post_to_queue(path);
+// }
 
 void MOONRAKER::get_printer_ready(void) {
     String webhooks = send_request("GET", "/printer/objects/query?webhooks");
@@ -217,21 +217,21 @@ void MOONRAKER::http_get_loop(void) {
 
 MOONRAKER moonraker;
 
-void moonraker_post_task(void * parameter) {
-    for(;;) {
-        moonraker.http_post_loop();
-        delay(500);
-    }
-}
+// void moonraker_post_task(void * parameter) {
+//     for(;;) {
+//         moonraker.http_post_loop();
+//         delay(500);
+//     }
+// }
 
 void moonraker_task(void * parameter) {
 
-    xTaskCreate(moonraker_post_task, "moonraker post",
-        4096,  // Stack size (bytes)
-        NULL,  // Parameter to pass
-        8,     // Task priority
-        NULL   // Task handle
-        );
+    // xTaskCreate(moonraker_post_task, "moonraker post",
+    //     4096,  // Stack size (bytes)
+    //     NULL,  // Parameter to pass
+    //     8,     // Task priority
+    //     NULL   // Task handle
+    //     );
 
     for(;;) {
         if (wifi_get_connect_status() == WIFI_STATUS_CONNECTED) {

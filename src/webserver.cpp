@@ -167,7 +167,7 @@ void webserver_setup(void) {
     } else {
         Serial.println("mDNS start ok!");
     }
-    AsyncElegantOTA.begin(&server);
+    // AsyncElegantOTA.begin(&server);
 
     server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request){
         AsyncWebServerResponse *response = request->beginResponse_P(200, "image/x-icon", btt_logo_only_ico, sizeof(btt_logo_only_ico));

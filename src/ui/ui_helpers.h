@@ -73,6 +73,12 @@ typedef struct _ui_anim_user_data_t {
     int32_t imgset_size;
     int32_t val;
 } ui_anim_user_data_t;
+
+typedef struct _ui_screen_user_data_t {
+    lv_obj_t ** src;
+    void(*init_func) (void);
+} _ui_screen_user_data_t;
+
 void _ui_anim_callback_free_user_data(lv_anim_t * a);
 
 void _ui_anim_callback_set_x(lv_anim_t * a, int32_t v);
@@ -113,8 +119,11 @@ void _ui_slider_set_text_value(lv_obj_t * trg, lv_obj_t * src, const char * pref
 
 void _ui_checked_set_text_value(lv_obj_t * trg, lv_obj_t * src, const char * txt_on, const char * txt_off);
 
-void _ui_spinbox_step(lv_obj_t * target, int val)
-;
+void _ui_spinbox_step(lv_obj_t * target, int val);
+
+void _ui_screen_change_auto_del(lv_obj_t **target, lv_scr_load_anim_t fademode, int spd, int delay, void (*target_init)(void));
+
+void _ui_screen_delete_by_obj(lv_obj_t *screen, bool delete_obj);
 
 #ifdef __cplusplus
 } /*extern "C"*/
